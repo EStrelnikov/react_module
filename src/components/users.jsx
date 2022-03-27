@@ -7,13 +7,33 @@ const Users = () => {
         setUsers(prevState => prevState.filter((user) => user._id !== userId))
     }
     const renderPhrase = (number) => {
-        return (
-            <span className={`badge bg-${number > 0 ? 'primary' : 'danger' }`}>
-                { number === 0 ? 'Никто с тобой не тусанет' : 
-                       number === 1 || number > 4 ? number + ' человек тусанет с тобой сегодня' :
-                            number + ' человека тусанут с тобой сегодня'}
-            </span>
-        )
+        let arrNumber = String(number).split('');
+        if (number === 0) {
+            return (
+                <span className={`badge bg-danger`}>
+                    {'Никто с тобой не тусанет'}
+                </span>
+        )}
+        if (
+            (arrNumber.length >= 1 && 
+            arrNumber[arrNumber.length - 1] > 1 &&
+            arrNumber[arrNumber.length - 1] < 5 &&
+            arrNumber[arrNumber.length - 2] > 1) ||
+            (arrNumber.length === 1 &&
+            arrNumber[arrNumber.length - 1] > 1 &&
+            arrNumber[arrNumber.length - 1] < 5)
+            ) {
+            return (
+                <span className={`badge bg-primary`}>
+                    { number + ' человека тусанут с тобой сегодня'}
+                </span>
+        )} else {
+            return (
+                <span className={`badge bg-primary`}>
+                    {number + ' человек тусанет с тобой сегодня'}
+                </span>
+            )
+        }
     }
     return (
         <>
