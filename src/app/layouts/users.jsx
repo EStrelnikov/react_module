@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { paginate } from "../utils/paginate";
-import Pagination from "./pagination";
-import GroupList from "./groupList";
+import Pagination from "../components/pagination";
+import GroupList from "../components/groupList";
 import api from "../api";
-import SearchStatus from "./searchStatus";
-import UserTable from "./usersTable";
+import SearchStatus from "../components/searchStatus";
+import UserTable from "../components/usersTable";
 import _ from "lodash";
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +13,7 @@ const Users = () => {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 4;
     const [users, setUsers] = useState();
+    let count;
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -27,6 +28,9 @@ const Users = () => {
             return user;
         });
         setUsers(newArray);
+    };
+    const clearFilter = () => {
+        setSelectedProf();
     };
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
@@ -43,32 +47,18 @@ const Users = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
+    useEffect(() => {
+        if (count / currentPage < currentPage || count === pageSize) {
+            handlePageChange(currentPage - 1);
+        }
+    }, [users]);
     if (users) {
         const filteredUsers = selectedProf
-            ? users.filter(
-                (user) =>
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
-            )
+            ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
             : users;
-        const count = filteredUsers.length;
+        count = filteredUsers.length;
         const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
-        const clearFilter = () => {
-            setSelectedProf();
-        };
-        // useEffect(() => {
-        //     if (filteredUsers.length === 0) {
-        //         window.setTimeout(() => {
-        //             clearFilter();
-        //         }, 2000);
-        //     }
-        // }, [filteredUsers]);
-        // useEffect(() => {
-        //     if (count / currentPage < currentPage || count === pageSize) {
-        //         handlePageChange(currentPage - 1);
-        //     }
-        // }, [users]);
         return (
             <div className="d-flex">
                 {professions && (
@@ -80,7 +70,7 @@ const Users = () => {
                         />
                         <button
                             className="btn btn-secondary mt-2"
-                            onClick={clearFilter}
+                            onClick={() => clearFilter()}
                         >
                             Очистить
                         </button>
