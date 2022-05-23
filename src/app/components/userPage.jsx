@@ -4,13 +4,13 @@ import { useHistory } from "react-router-dom";
 import api from "../api";
 import QualitiesList from "./qualitiesList";
 const UserPage = ({ userId }) => {
-    const [user, setUsers] = useState();
+    const [user, setUser] = useState();
     const history = useHistory();
     const handleBack = () => {
         history.push("/users");
     };
     useEffect(() => {
-        api.users.getById(userId).then((data) => setUsers(data));
+        api.users.getById(userId).then((data) => setUser(data));
     }, []);
     if (user) {
         return (
@@ -18,14 +18,9 @@ const UserPage = ({ userId }) => {
                 <h1>{user.name}</h1>
                 <h3>{"Профессия: " + user.profession.name}</h3>
                 <QualitiesList qualities={user.qualities} />
-                <div>{"Кол-во встреч: " + user.completedMeetings}</div>
+                <p>{"Кол-во встреч: " + user.completedMeetings}</p>
                 <h3>{"Рейтинг: " + user.rate}</h3>
-                <button
-                    className="cardUser_btn"
-                    onClick={() => {
-                        handleBack();
-                    }}
-                >
+                <button className="cardUser__btn" onClick={() => handleBack()}>
                     Все Пользователи
                 </button>
             </div>
