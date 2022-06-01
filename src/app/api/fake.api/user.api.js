@@ -180,8 +180,6 @@ const update = (id, data) =>
     new Promise((resolve) => {
         const users = JSON.parse(localStorage.getItem("users"));
         const userIndex = users.findIndex((u) => u._id === id);
-        console.log(userIndex, users[userIndex]);
-        console.log(data);
         users[userIndex] = { ...users[userIndex], ...data };
         localStorage.setItem("users", JSON.stringify(users));
         resolve(users[userIndex]);
