@@ -149,7 +149,6 @@ const RegisterForm = () => {
                 value={data.profession}
                 error={errors.profession}
             />
-            {console.log(data.qualities)}
             <RadioField
                 options={[
                     { name: "Male", value: "male" },
