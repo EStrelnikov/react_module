@@ -11,6 +11,7 @@ import { useQualities } from "../../../hooks/useQualities";
 import { useAuth } from "../../../hooks/useAuth";
 
 const EditUserPage = () => {
+    const { currentUser, updateUser } = useAuth();
     const { getProfession, professions } = useProfessions();
     const { qualities, getQuality } = useQualities();
     const qualitiesList = qualities.map((q) => ({
@@ -21,7 +22,6 @@ const EditUserPage = () => {
         label: p.name,
         value: p._id
     }));
-    const { currentUser, updateUser } = useAuth();
     const profession = getProfession(currentUser.profession);
     const qualitiesCurrent = currentUser.qualities.map((qual) => {
         const quality = getQuality(qual);
@@ -70,6 +70,7 @@ const EditUserPage = () => {
     };
     useEffect(() => {
         validate();
+        console.log(data);
     }, [data]);
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -83,12 +84,13 @@ const EditUserPage = () => {
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
+    console.log(data.qualities);
     return (
         <div className="container mt-5">
             <BackHistoryButton />
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {currentUser ? (
+                    {currentUser && professions && qualities ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Имя"
