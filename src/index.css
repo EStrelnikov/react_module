@@ -11,19 +11,3 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
-.loader {
-    width: 200px;
-    margin: 20px auto ;
-}
-.cardUser {
-    max-width: 600px;
-    margin: 0 auto;
-    border-radius: 15px;
-    background: rgb(199, 193, 193);
-    text-align: center;
-    padding: 20px;
-    box-shadow: 0 0 10px black;
-}
-li {
-    list-style-type: none;
-}
